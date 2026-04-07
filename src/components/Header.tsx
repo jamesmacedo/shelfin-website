@@ -29,8 +29,8 @@ const Header = () => {
   return (
     <header className="absolute top-0 left-0 right-0 z-50 bg-transparent lg:p-4 lg:px-20">
       <div className="flex items-center justify-between py-4 px-4">
-        <a href="/" className="bg-red-500 flex justify-start items-start">
-          <Image src={logo} alt="Shelfin" className="h-8" />
+        <a href="/" className="flex justify-start items-start w-20">
+          <Image src={logo} alt="Shelfin" className="" height={40}/>
         </a>
 
         <nav className="hidden md:flex items-center gap-8">

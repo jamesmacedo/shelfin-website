@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server';
 import { BrevoClient } from '@getbrevo/brevo';
 
-export async function createContact(request: Request) {
+export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { email, nome, listId } = body;
+
+    const { email, nome, telefone, mensagem } = body;
+
 
     if (!email) {
       return NextResponse.json({ error: 'Email é obrigatório' }, { status: 400 });
@@ -13,13 +15,26 @@ export async function createContact(request: Request) {
     const client = new BrevoClient({
       apiKey: process.env.BREVO_API_KEY as string,
     });
+      
+    console.log(telefone.replace(/\D/g, ""));
 
-    await client.contacts.createContact({
-      listIds: [1, 5],
+    const contact = await client.contacts.createContact({
+      listIds: [33],
       email: email,
+      emailBlacklisted: true,
+      smsBlacklisted: true,
       attributes : {
+        NOME: nome,
+        SMS: "+55"+telefone.replace(/\D/g, ""),
       }
     });
+
+    const noteData = {
+      contactIds: [contact.id as number],
+      text: mensagem as string 
+    };
+
+    await client.notes.createANote(noteData);
 
     return NextResponse.json({ success: true }, { status: 201 });
 
