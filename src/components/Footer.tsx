@@ -37,8 +37,8 @@ const Footer = () => {
         <div className="grid md:grid-cols-3 gap-8 mb-8">
           <div>
             <a href="/" className="inline-block mb-4">
-              <Image src={logo} alt="Shelfin" className="h-8" />
             </a>
+            <Image src={logo} alt="Shelfin" className="h-8" />
             <p className="text-footer-foreground text-sm leading-relaxed">
               A Shelfin é uma empresa especializada em recrutamento, seleção e gestão de competências. Combinamos tecnologia e inteligência humana para encontrar e desenvolver os melhores talentos.
             </p>
