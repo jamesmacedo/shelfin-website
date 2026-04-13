@@ -1,5 +1,6 @@
 import { CheckCircle } from "lucide-react";
-import heroBg from "@/assets/hero-bg.jpg";
+import Image from 'next/image';
+// import heroBg from "@/assets/hero-bg.jpg";
 
 import ContactForm from "@/components/forms/Contact"
 
@@ -13,7 +14,7 @@ const benefits = [
 const HeroSection = () => {
   return (
     <section className="relative bg-hero min-h-[700px] flex items-center overflow-hidden lg:px-32">
-      <img src={heroBg} alt="" className="absolute inset-0 w-full h-full object-cover" />
+      {/* <Image src={heroBg} alt="" className="absolute inset-0 w-full h-full object-cover"></Image> */}
       <div className="absolute inset-0 bg-gradient-to-r from-hero/95 via-hero/80 to-hero/50" />
 
       <div className="container mx-auto px-4 pt-24 pb-16 relative z-10">
