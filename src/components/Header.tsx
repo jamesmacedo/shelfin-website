@@ -21,6 +21,10 @@ const navItems = [
     title: "Por que a Shelfin?",
     href: "#por-que"
   },
+  {
+    title: "Plataforma",
+    href: "https://app.shelfin.com.br"
+  },
 ]
 
 const Header = () => {

@@ -4,7 +4,7 @@ import { Search, UserCheck, Briefcase, GraduationCap } from "lucide-react";
 const services = [
   {
     icon: Search,
-    title: "HeadHunter",
+    title: "Executive Search",
     description:
       "Seleção estratégica de profissionais para cargos de liderança e alta performance, com abordagem ativa e assertiva.",
   },

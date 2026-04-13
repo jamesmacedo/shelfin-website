@@ -8,36 +8,46 @@ import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectItem, SelectTrigger, SelectValue, SelectContent } from "@/components/ui/select";
+
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 
+const deisallowedDomains = ["gmail.com", "outlook.com", "hotmail.com", "yahoo.com", "icloud.com"];
+
 const formSchema = z.object({
   nome: z.string().min(3, "O nome deve ter pelo menos 3 caracteres."),
-  email: z.string().email("Insira um endereço de e-mail válido."),
+  email: z.string().email("Insira um endereço de e-mail válido.").refine((email) => {
+    const domain = email.split("@")[1];
+    return !deisallowedDomains.includes(domain);
+  }, "Por favor, use um e-mail corporativo."),
+  empresa: z.string().min(3, "A empresa deve ter pelo menos 3 caracteres."),
   telefone: z.string().regex(
     /^\(?\d{2}\)?\s?(9?\d{4})-?(\d{4})$/,
     "Telefone inválido. Ex: (11) 99999-9999"
   ),
-  mensagem: z.string().optional(),
+  servico: z.string({
+    // error: (issue) => issue.input === undefined || issue.input === "" ? "Por favor, selecione um serviço de interesse." : ""
+  }).min(3, "Selecione um serviço"),
 });
 
 const ContactForm = () => {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
-  // Inicialização do formulário gerenciado pelo react-hook-form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       nome: "",
       email: "",
+      empresa: "",
       telefone: "",
-      mensagem: "",
+      servico: "",
     },
   });
 
@@ -53,7 +63,7 @@ const ContactForm = () => {
 
       if (response.ok) {
         setStatus("success");
-        form.reset(); // Limpa os campos automaticamente
+        form.reset();
         setTimeout(() => setStatus("idle"), 3000);
       } else {
         setStatus("error");
@@ -69,7 +79,7 @@ const ContactForm = () => {
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
-      className="bg-card rounded-xl p-6 shadow-xl border border-border w-full lg:w-[500px]"
+      className="bg-card rounded-xl p-6 shadow-xl border border-border"
     >
       <p className="text-center text-sm font-medium text-foreground mb-4">
         Solicite um orçamento em{" "}
@@ -82,9 +92,24 @@ const ContactForm = () => {
             control={form.control}
             name="nome"
             render={({ field }) => (
-               <FormItem>
+              <FormItem>
+                <FormLabel>Nome</FormLabel>
                 <FormControl>
-                  <Input placeholder="Seu nome completo" className="py-5" {...field} />
+                  <Input placeholder="Ex: João da Silva" className="py-5" {...field} />
+                </FormControl>
+                <FormMessage className="text-xs text-red-500" />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="empresa"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Empresa</FormLabel>
+                <FormControl>
+                  <Input placeholder="" className="py-5" {...field} />
                 </FormControl>
                 <FormMessage className="text-xs text-red-500" />
               </FormItem>
@@ -96,8 +121,9 @@ const ContactForm = () => {
             name="email"
             render={({ field }) => (
               <FormItem>
+                <FormLabel>E-mail corporativo</FormLabel>
                 <FormControl>
-                  <Input type="email" placeholder="Seu e-mail corporativo" className="py-5" {...field} />
+                  <Input type="email" placeholder="Ex: joao.silva@empresa.com.br" className="py-5" {...field} />
                 </FormControl>
                 <FormMessage className="text-xs text-red-500" />
               </FormItem>
@@ -109,14 +135,14 @@ const ContactForm = () => {
             name="telefone"
             render={({ field }) => (
               <FormItem>
+                <FormLabel>Telefone (WhatsApp)</FormLabel>
                 <FormControl>
                   <Input
                     type="tel"
-                    placeholder="(XX) 9XXXX-XXXX"
+                    placeholder="Ex: (11) 98765-4321"
                     className="py-5"
                     {...field}
                     onChange={(e) => {
-                      // Aplicando uma máscara simples direto no evento de input
                       let value = e.target.value.replace(/\D/g, "");
                       if (value.length > 11) value = value.slice(0, 11);
                       if (value.length > 2) value = `(${value.slice(0, 2)}) ${value.slice(2)}`;
@@ -132,32 +158,40 @@ const ContactForm = () => {
 
           <FormField
             control={form.control}
-            name="mensagem"
+            name="servico"
             render={({ field }) => (
               <FormItem>
-                <FormControl>
-                  <Textarea
-                    placeholder="Sua mensagem"
-                    className="resize-none min-h-[100px]"
-                    {...field}
-                  />
-                </FormControl>
+                <FormLabel>Solução de interesse</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger className="py-5">
+                      <SelectValue placeholder="Selecione uma opção..." />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="NR-1">NR-1</SelectItem>
+                    <SelectItem value="Treinamentos">Treinamentos</SelectItem>
+                    <SelectItem value="Consultoria de RH">Consultoria de RH</SelectItem>
+                    <SelectItem value="Recrutamento & Seleção">Recrutamento & Seleção</SelectItem>
+                    <SelectItem value="Executive Search">Executive Search</SelectItem>
+                  </SelectContent>
+                </Select>
                 <FormMessage className="text-xs text-red-500" />
               </FormItem>
             )}
           />
-          
+
           <Button
             type="submit"
             disabled={status === "loading" || status === "success"}
             className="w-full bg-cta text-cta-foreground font-bold py-6 rounded-lg hover:opacity-90 transition-opacity text-sm tracking-wide disabled:opacity-50"
           >
-            {status === "loading" ? "ENVIANDO..." : 
-             status === "success" ? "CONTATO ENVIADO! ✓" : 
-             status === "error" ? "ERRO AO ENVIAR. TENTE NOVAMENTE" : 
-             "SOLICITAR CONTATO!"}
+            {status === "loading" ? "ENVIANDO..." :
+              status === "success" ? "CONTATO ENVIADO! ✓" :
+                status === "error" ? "ERRO AO ENVIAR. TENTE NOVAMENTE" :
+                  "SOLICITAR CONTATO!"}
           </Button>
-          
+
           <p className="text-xs text-muted-foreground text-center mt-2">
             *Ao enviar, você concorda com nossa política de privacidade.
           </p>
