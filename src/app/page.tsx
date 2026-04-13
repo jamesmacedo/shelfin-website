@@ -7,6 +7,8 @@ import ServicesSection from "@/components/ServicesSection";
 import WhyShelfin from "@/components/WhyShelfin";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
+import WhatsappButton from "@/components/WhatsappButton";
+
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -31,7 +33,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/og-image.jpg',
+        url: '/consultoria_de_rh.jpg',
         width: 1200,
         height: 630,
         alt: 'Shelfin - Consultoria de RH',
@@ -84,6 +86,12 @@ const jsonLd = {
 
       <ContactSection />
       <Footer />
+
+      <WhatsappButton 
+        phoneNumber="554136384128" 
+        message="Olá, vim pelo site e gostaria de tirar uma dúvida!"
+        buttonText="Dúvidas? Chame no Whatsapp!"
+      />
     </div>
   );
 }
