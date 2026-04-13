@@ -1,3 +1,5 @@
+'use client'
+
 import { motion } from "framer-motion";
 import { Brain, Zap, Users, Award } from "lucide-react";
 

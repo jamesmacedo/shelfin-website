@@ -1,3 +1,5 @@
+'use client'
+
 import Typewriter from 'typewriter-effect';
 
 import { motion } from "framer-motion";
