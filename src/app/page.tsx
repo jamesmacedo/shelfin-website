@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: `${process.env.NEXT_PUBLIC_SITE_URL}/consultoria_de_rh.jpg`,
+        url: `${process.env.NEXT_PUBLIC_SITE_URL}/consultoria_de_rh.jpeg`,
         width: 1200,
         height: 630,
         alt: 'Shelfin - Consultoria de RH',
