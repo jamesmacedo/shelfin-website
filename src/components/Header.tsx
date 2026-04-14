@@ -27,6 +27,10 @@ const navItems = [
     title: "Plataforma",
     href: "https://app.shelfin.com.br"
   },
+  {
+    title: "Nossas Vagas",
+    href: "https://www.bne.com.br/jobs/shelfinrh"
+  },
 ]
 
 const Header = () => {
@@ -44,10 +48,6 @@ const Header = () => {
             <a
               key={item.href}
               href={item.href}
-              onClick={(e) => {
-                e.preventDefault();
-                document.querySelector(item.href)?.scrollIntoView({ behavior: "smooth" });
-              }}
               className="text-sm font-medium text-primary-foreground/80 hover:text-primary-foreground transition-colors"
             >
               {item.title}
@@ -79,9 +79,7 @@ const Header = () => {
               key={item.href}
               href={item.href}
               onClick={(e) => {
-                e.preventDefault();
                 setMenuOpen(false);
-                document.querySelector(item.href)?.scrollIntoView({ behavior: "smooth" });
               }}
               className="block text-sm text-primary-foreground/80 hover:text-primary-foreground"
             >
