@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "update": "git pull && next build && pm2 startOrReload ecosystem.config.js --update-env",
     "start": "next start",
     "lint": "eslint"
   },
